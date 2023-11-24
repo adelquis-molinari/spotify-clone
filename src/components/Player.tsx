@@ -63,19 +63,24 @@ export const Volume: React.FC = () => (
 const CurrentSong = ({
   image,
   title,
+  artists,
 }: {
   image: string | null;
   title: string | null;
+  artists: string[] | null;
 }) => {
   const imageUrl = image || "/";
   const titleText = title || "";
-
+  const artistsText = artists || "";
   return (
     <div className={`flex items-center gap-5 relative overflow-hidden`}>
       <picture className="w-16 h-16 bg-zinc-800 rounded-md shadow-lg overflow-hidden">
         <img src={imageUrl} alt={titleText} />
       </picture>
-      <h3 className="font-bold block">{titleText}</h3>
+      <div className="flex flex-col">
+        <h3 className="font-bold block">{titleText}</h3>
+        <span className="text-xs opacity-60">{artists?.join(", ")}</span>
+      </div>
     </div>
   );
 };
@@ -116,13 +121,13 @@ export const Player: React.FC = () => {
   };
 
   const {
-    song: { image, title },
+    song: { image, title, artists },
   } = currentMusic;
 
   return (
     <div className="flex flex-row justify-between w-full px-4 z-50">
       <div>
-        <CurrentSong image={image} title={title} />
+        <CurrentSong image={image} title={title} artists={artists} />
       </div>
       <div className="grid place-content-center gap-4 flex-1">
         <div className="flex justify-center">
