@@ -1,3 +1,4 @@
+import { usePlayerStore } from "@/store/playerStore";
 import React, { useState, useEffect, useRef } from "react";
 
 interface PauseProps {
@@ -59,32 +60,70 @@ export const Volume: React.FC = () => (
   ></svg>
 );
 
+const CurrentSong = ({
+  image,
+  title,
+}: {
+  image: string | null;
+  title: string | null;
+}) => {
+  const imageUrl = image || "/";
+  const titleText = title || "";
+
+  return (
+    <div className={`flex items-center gap-5 relative overflow-hidden`}>
+      <picture className="w-16 h-16 bg-zinc-800 rounded-md shadow-lg overflow-hidden">
+        <img src={imageUrl} alt={titleText} />
+      </picture>
+      <h3 className="font-bold block">{titleText}</h3>
+    </div>
+  );
+};
+
 export const Player: React.FC = () => {
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [currentSong, setCurrentSong] = useState<string | null>(null);
+  const { isPlaying, currentMusic, setIsPlaying, setCurrentMusic } =
+    usePlayerStore((store) => store);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.src = "/music/1/01.mp3";
-    }
-  }, []);
+    isPlaying ? audioRef.current?.play() : audioRef.current?.pause();
+  }, [isPlaying]);
 
-  const handleClick = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
+  useEffect(() => {
+    const { playlist, songs, song } = currentMusic;
+    if (song) {
+      const url = `/music/${playlist?.id}/0${song.id}.mp3`;
+      if (audioRef.current) {
+        audioRef.current.src = url;
         audioRef.current.play();
-        audioRef.current.volume = 0.1;
       }
     }
+  }, [currentMusic]);
+
+  const handleClick = () => {
     setIsPlaying(!isPlaying);
   };
 
+  const songis = {
+    id: 1,
+    albumId: 1,
+    title: "Moonlit Walk",
+    image:
+      "https://vinyl.lofirecords.com/cdn/shop/products/VINYL_MORNING_COFFEE_4-min.png?v=1680526353",
+    artists: ["LoFi Dreamer"],
+    album: "Chill Lo-Fi Music",
+    duration: "3:12",
+  };
+
+  const {
+    song: { image, title },
+  } = currentMusic;
+
   return (
     <div className="flex flex-row justify-between w-full px-4 z-50">
-      <div>Current song</div>
+      <div>
+        <CurrentSong image={image} title={title} />
+      </div>
       <div className="grid place-content-center gap-4 flex-1">
         <div className="flex justify-center">
           <button className="bg-white rounded-full p-2" onClick={handleClick}>
