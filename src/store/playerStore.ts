@@ -18,9 +18,13 @@ export interface Music {
 export interface PlayerStore {
   isPlaying: boolean;
   currentMusic: Music;
+  volume: number;
+  setVolume: (volume:number) => void;
   setIsPlaying: (isPlaying: boolean) => void;
   setCurrentMusic: (currentMusic: Music) => void;
 }
+
+
 
 export const usePlayerStore = create<PlayerStore>((set) => ({
   isPlaying: false,
@@ -33,6 +37,8 @@ export const usePlayerStore = create<PlayerStore>((set) => ({
     album:  null,
     duration: null,
 }, songs: []},
+  volume: 0.20,
+  setVolume: (volume) => set({ volume }),
   setIsPlaying: (isPlaying) => set({ isPlaying }),
   setCurrentMusic: (currentMusic) => set({ currentMusic }),
 }));
