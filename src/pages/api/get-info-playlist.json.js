@@ -1,4 +1,4 @@
-import { allPlaylists, songs as allSongs } from "../lib/data";
+import { allPlaylists, songs as allSongs } from "../../lib/data";
 
 export async function GET({ _, request }) {
   const { url } = request;
