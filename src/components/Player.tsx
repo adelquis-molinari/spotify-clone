@@ -78,7 +78,6 @@ const CurrentSong = ({
 }) => {
   const imageUrl = image || "/";
   const titleText = title || "";
-  const artistsText = artists || "";
   return (
     <div className={`flex items-center gap-5 relative overflow-hidden`}>
       <picture className="w-16 h-16 bg-zinc-800 rounded-md shadow-lg overflow-hidden">
@@ -190,14 +189,13 @@ export const Player: React.FC = () => {
     (store) => store
   );
   const audioRef = useRef<HTMLAudioElement>(null);
-  const volumeRef = useRef<number>(1);
 
   useEffect(() => {
     isPlaying ? audioRef.current?.play() : audioRef.current?.pause();
   }, [isPlaying]);
 
   useEffect(() => {
-    const { playlist, songs, song } = currentMusic;
+    const { playlist, song } = currentMusic;
     if (song) {
       const url = `/music/${playlist?.id}/0${song.id}.mp3`;
       if (audioRef.current) {
@@ -216,17 +214,6 @@ export const Player: React.FC = () => {
 
   const handleClick = () => {
     setIsPlaying(!isPlaying);
-  };
-
-  const songis = {
-    id: 1,
-    albumId: 1,
-    title: "Moonlit Walk",
-    image:
-      "https://vinyl.lofirecords.com/cdn/shop/products/VINYL_MORNING_COFFEE_4-min.png?v=1680526353",
-    artists: ["LoFi Dreamer"],
-    album: "Chill Lo-Fi Music",
-    duration: "3:12",
   };
 
   const {
