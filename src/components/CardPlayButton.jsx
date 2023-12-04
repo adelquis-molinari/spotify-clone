@@ -1,4 +1,4 @@
-import { usePlayerStore } from "@/store/playerStore";
+import { usePlayerStore } from "../store/playerStore";
 import { Play, Pause } from "./Player";
 
 export const CardPlayButton = ({id, size = 'small' }) => {
